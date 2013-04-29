@@ -12,7 +12,7 @@ public class Mapa {
 	
 	// Getters & Setters
 	public int getLength() { return _mapa.size(); }
-	
+
 	public Cidade getCidade(String nome) {
 		for(Cidade c : _mapa) {
 			if(c.getNome().equals(nome)) {
@@ -22,6 +22,13 @@ public class Mapa {
 		
 		return null;
 	}
+	public Cidade getCidade(int index) {
+		if(index >= 0 && index < _mapa.size())
+			return _mapa.get(index);
+		
+		return null;
+	}
+	
 	public String getNomeCidade(int index) { return _mapa.get(index).getNome(); }
 	
 	public void addCidade(Cidade novaCidade) { _mapa.add(novaCidade); }

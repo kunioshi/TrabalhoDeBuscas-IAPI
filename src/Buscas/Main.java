@@ -1,3 +1,8 @@
+// Arthur Henrique
+// Filipe Kunioshi
+// Francisco Nin
+// Lucas Martino
+
 package Buscas;
 
 import java.io.*;
@@ -95,7 +100,6 @@ public class Main {
 		}
 		
 		if(aberturaCompleta){
-			ArrayList<String> nomeCidades = new ArrayList<String>();
 			String inicio = "", fim = "";
 			boolean loop = true;
 			while(loop) {
@@ -125,45 +129,57 @@ public class Main {
 						// Recebe a cidade que o usuário deseja partir (Ponto Inicial)
 						System.out.println("Digite o número da cidade de onde deseja partir (Ponto Inicial) ou digite qualquer outro caracter para voltar ao Menu Inicial: ");
 						inicio = entrada.next();
-						if(Integer.parseInt(inicio) <= nomeCidades.size() && Integer.parseInt(inicio) > 0) {
+						if(Integer.parseInt(inicio) <= mapa.getLength() && Integer.parseInt(inicio) > 0) {
 							// Recebe a cidade que o usuário deseja chegar (Ponto Final)
 							System.out.println("Digite o número da cidade que deseja chegar (Ponto Final) ou digite qualquer outro caracter para voltar ao Menu Inicial: ");
 							fim = entrada.next();
-							if(Integer.parseInt(fim) <= nomeCidades.size() && Integer.parseInt(fim) > 0) {
+							if(Integer.parseInt(fim) <= mapa.getLength() && Integer.parseInt(fim) > 0) {
 								// Caso todas as entradas sejam válidas, realiza a busca em largura
 								Busca buscas = new Busca();
-								buscas.buscaEmLargura( nomeCidades.get(Integer.parseInt(inicio) - 1), nomeCidades.get(Integer.parseInt(fim) - 1), mapa );
+								buscas.buscaEmLargura( mapa.getNomeCidade(Integer.parseInt(inicio) - 1), mapa.getNomeCidade(Integer.parseInt(fim) - 1), mapa );
 							}
+
+							System.out.println("Pressione ENTER para retornar ao menu inicial.");
+							entrada.nextLine(); // Cambiarra para ele identificar um ENTER, com ou sem conteúdo
+							entrada.nextLine();
 						}
 						break;
 					case 2:
 						// Recebe a cidade que o usuário deseja partir (Ponto Inicial)
 						System.out.println("Digite o número da cidade de onde deseja partir (Ponto Inicial) ou digite qualquer outro caracter para voltar ao Menu Inicial: ");
 						inicio = entrada.next();
-						if(Integer.parseInt(inicio) <= nomeCidades.size() && Integer.parseInt(inicio) > 0) {
+						if(Integer.parseInt(inicio) <= mapa.getLength() && Integer.parseInt(inicio) > 0) {
 							// Recebe a cidade que o usuário deseja chegar (Ponto Final)
 							System.out.println("Digite o número da cidade que deseja chegar (Ponto Final) ou digite qualquer outro caracter para voltar ao Menu Inicial: ");
 							fim = entrada.next();
-							if(Integer.parseInt(fim) <= nomeCidades.size() && Integer.parseInt(fim) > 0) {
+							if(Integer.parseInt(fim) <= mapa.getLength() && Integer.parseInt(fim) > 0) {
 								// Caso todas as entradas sejam válidas, realiza a busca em largura
 								Busca buscas = new Busca();
-								buscas.buscaEmProfundidade( nomeCidades.get(Integer.parseInt(inicio) - 1), nomeCidades.get(Integer.parseInt(fim) - 1), mapa );
+								buscas.buscaEmProfundidade( mapa.getNomeCidade(Integer.parseInt(inicio) - 1), mapa.getNomeCidade(Integer.parseInt(fim) - 1), mapa );
 							}
+							
+							System.out.println("Pressione ENTER para retornar ao menu inicial.");
+							entrada.nextLine(); // Cambiarra para ele identificar um ENTER, com ou sem conteúdo
+							entrada.nextLine();
 						}
 						break;
 					case 3:
 						// Recebe a cidade que o usuário deseja partir (Ponto Inicial)
 						System.out.println("Digite o número da cidade de onde deseja partir (Ponto Inicial) ou digite qualquer outro caracter para voltar ao Menu Inicial: ");
 						inicio = entrada.next();
-						if(Integer.parseInt(inicio) <= nomeCidades.size() && Integer.parseInt(inicio) > 0) {
+						if(Integer.parseInt(inicio) <= mapa.getLength() && Integer.parseInt(inicio) > 0) {
 							// Recebe a cidade que o usuário deseja chegar (Ponto Final)
 							System.out.println("Digite o número da cidade que deseja chegar (Ponto Final) ou digite qualquer outro caracter para voltar ao Menu Inicial: ");
 							fim = entrada.next();
-							if(Integer.parseInt(fim) <= nomeCidades.size() && Integer.parseInt(fim) > 0) {
+							if(Integer.parseInt(fim) <= mapa.getLength() && Integer.parseInt(fim) > 0) {
 								// Caso todas as entradas sejam válidas, realiza a busca em largura
 								Busca buscas = new Busca();
-								buscas.buscaAStar( nomeCidades.get(Integer.parseInt(inicio) - 1), nomeCidades.get(Integer.parseInt(fim) - 1), mapa );
+								buscas.buscaAStar( mapa.getNomeCidade(Integer.parseInt(inicio) - 1), mapa.getNomeCidade(Integer.parseInt(fim) - 1), mapa );
 							}
+							
+							System.out.println("Pressione ENTER para retornar ao menu inicial.");
+							entrada.nextLine(); // Cambiarra para ele identificar um ENTER, com ou sem conteúdo
+							entrada.nextLine();
 						}
 						
 						break;
