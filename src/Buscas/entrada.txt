@@ -1,0 +1,9 @@
+@cidades
+São Paulo = 5|4
+Campinas = 9|7
+Mogi Guaçu = 1|2
+Mogi Mirim = 1|1
+@conexoes
+São Paulo|Campinas
+Mogi Guaçu|Mogi Mirim
+Mogi Guaçu|Campinas
