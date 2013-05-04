@@ -14,100 +14,112 @@ public class Main {
 		Mapa mapa = new Mapa();
 		boolean aberturaCompleta = false;
 		
-		try {
-			// Recebe o caminho do arquivo "*.txt" do usuário
-			String usuario;
-			entrada = new Scanner(System.in);
-			System.out.println("Digite o caminho do arquivo do arquivo de texto (*.txt):");
-			usuario = entrada.next();
-			
-			// Abre o arquivo indicado
-			entrada = new Scanner( new File(usuario) );
-			
-			// Verifica se o arquivo indicádo é do tipo "*.txt"
-			if(usuario.lastIndexOf(".txt") != -1) {
-				// Caso seja um TXT
-				String auxString;
-				int etapa = 0; // 0=Inicio | 1=Cidades | 2=Conexões
-				while(entrada.hasNextLine()) {
-					auxString = entrada.nextLine();
-					
-					// Verifica a formatação e a etapa da leitura
-					if(auxString.equals("@cidades")) etapa = 1;
-					else if(auxString.equals("@conexoes")) etapa = 2;
-					else {
-						// Monta o mapa (coloca as cidades no mapa)
-						if(etapa == 1) {
-							Scanner auxScan = new Scanner(auxString);
-							auxScan.useDelimiter(" = ");
-							
-							// Variáveis auxiliares para armazenar valores
-							String auxNome;
-							int auxX, auxY;
-							
-							// Recebe o nome da Cidade
-							auxNome = auxScan.next();
-							
-							String auxScanCoord = auxScan.next();
-							auxScan.close();
-							auxScan = new Scanner(auxScanCoord);
-							auxScan.useDelimiter("\\|");
-							
-							// Recebe as coordenadas
-							auxX = Integer.parseInt(auxScan.next());
-							auxY = Integer.parseInt(auxScan.next());
-							
-							// Monta uma lista simples das cidades
-							mapa.addCidade(new Cidade(auxNome, auxX, auxY));
-							
-							auxScan.close();
-						} else if(etapa == 2) {
-							// Implementa as cidades gravadas
-							Scanner auxScan = new Scanner(auxString);
-							auxScan.useDelimiter("\\|");
-							
-							String cidade = auxScan.next();
-							String conexao = auxScan.next();
-							Cidade auxCidade;
-							Cidade auxConexao;
-							
-							auxCidade = mapa.getCidade(cidade);
-							auxConexao = mapa.getCidade(conexao);
-							
-							// Verifica se as cidades mencionadas existem, caso existam grava a ligação em ambas as cidades (ida e volta)
-							if(auxCidade == null || auxConexao == null) {
-								System.out.println("Na conexão " + cidade + "~" + conexao + " uma das cidades não foi encontrada.");
+		while(!aberturaCompleta) {
+			try {
+				// Recebe o caminho do arquivo "*.txt" do usuário
+				String usuario;
+				entrada = new Scanner(System.in);
+				System.out.println("Digite o caminho do arquivo do arquivo de texto (*.txt), ou digite 0 para fechar o programa:");
+				usuario = entrada.next();
+				
+				// Verifica se o usuário deseja fechar o programa
+				if(usuario.equals("0"))
+					break;
+				
+				// Abre o arquivo indicado
+				entrada = new Scanner( new File(usuario) );
+				
+				// Verifica se o arquivo indicádo é do tipo "*.txt"
+				if(usuario.lastIndexOf(".txt") != -1) {
+					// Caso seja um TXT
+					String auxString;
+					int etapa = 0; // 0=Inicio | 1=Cidades | 2=Conexões
+					while(entrada.hasNextLine()) {
+						auxString = entrada.nextLine();
+						
+						// Verifica a formatação e a etapa da leitura
+						if(auxString.equals("@cidades")) etapa = 1;
+						else if(auxString.equals("@conexoes")) etapa = 2;
+						else {
+							if(etapa == 1) { // Monta o mapa (coloca as cidades no mapa)
+								// Divide o Scanner para conseguir mudar o Delimiter para melhor separar as variáveis
+								Scanner auxScan = new Scanner(auxString);
+								auxScan.useDelimiter(" = ");
+								
+								// Variáveis auxiliares para armazenar valores
+								String auxNome;
+								int auxX, auxY;
+								
+								// Recebe o nome da Cidade
+								auxNome = auxScan.next();
+								
+								// Sub-divide o Scanner para conseguir mudar o Delimiter para melhor separar as variáveis
+								String auxScanCoord = auxScan.next();
+								auxScan.close();
+								auxScan = new Scanner(auxScanCoord);
+								auxScan.useDelimiter("\\|");
+								
+								// Recebe as coordenadas
+								auxX = Integer.parseInt(auxScan.next());
+								auxY = Integer.parseInt(auxScan.next());
+								
+								// Monta uma lista simples das cidades
+								mapa.addCidade(new Cidade(auxNome, auxX, auxY));
+								
+								auxScan.close();
+							} else if(etapa == 2) { // Implementa as cidades gravadas
+								// Divide o Scanner para conseguir mudar o Delimiter para melhor separar as variáveis
+								Scanner auxScan = new Scanner(auxString);
+								auxScan.useDelimiter("\\|");
+	
+								// Sub-divide o Scanner para conseguir mudar o Delimiter para melhor separar as variáveis
+								String cidade = auxScan.next();
+								String conexao = auxScan.next();
+								Cidade auxCidade;
+								Cidade auxConexao;
+								
+								// Pega as Cidade's para checagem de suas existências seguido da gravação das ligações
+								auxCidade = mapa.getCidade(cidade);
+								auxConexao = mapa.getCidade(conexao);
+								
+								// Verifica se as cidades mencionadas existem, caso existam grava a ligação em ambas as cidades (ida e volta)
+								if(auxCidade == null || auxConexao == null) {
+									// Caso não seja encontrado uma das cidades selecionadas, informa ao usuário
+									System.out.println("Na conexão " + cidade + "~" + conexao + " uma das cidades não foi encontrada.");
+								} else {
+									// Caso ambas as cidades sejam encontradas, grava as ligações em ambas as cidades (caminho de ida e volta, considerando que uma estrada entre cidades é impossível de ser "mão única")
+									auxCidade.setProx(auxConexao);
+									auxConexao.setProx(auxCidade);
+								}
+								
+								auxScan.close();
 							} else {
-								auxCidade.setProx(auxConexao);
-								auxConexao.setProx(auxCidade);
+								// Caso continue sendo 0, significa que ocorreu algum erro na formatação do arquivo
+								break;
 							}
-							
-							auxScan.close();
-						} else {
-							// Caso continue sendo 0, significa que ocorreu algum erro na formatação do arquivo
-							break;
 						}
 					}
+					aberturaCompleta = true;
+				} else {
+					Scanner erro = new Scanner(System.in);
+					// Caso o arquivo informado pelo usuário não seja um TXT, informa o erro ao usuário
+					System.out.println("O arquivo indicado não é um '*.txt'");
+					System.out.println("Pressione ENTER para tentar inserir novamente o caminho do arquivo.");
+					erro.nextLine(); // Gambiarra para ele identificar um ENTER, com ou sem conteúdo
+					erro.nextLine();
+					erro.close();
 				}
-				
-				aberturaCompleta = true;
-				
-				// Mostra as cidades e suas ligações
-				for(Cidade c : mapa.getMapa()) {
-					System.out.println(c.getNome());
-					for(Cidade n : c.getProx()) {
-						System.out.print("->");
-						System.out.println(n.getNome());
-					}
-				}
-				System.out.println("\n\n");
-			} else {
-				System.out.println("O arquivo indicado não é um '*.txt'");
+			} catch(FileNotFoundException e) {
+				Scanner erro = new Scanner(System.in);
+				System.out.println("Erro na abertura do arquivo.");
+				System.out.println("Pressione ENTER para tentar inserir novamente o caminho do arquivo.");
+				erro.nextLine(); // Gambiarra para ele identificar um ENTER, com ou sem conteúdo
+				erro.nextLine();
+				erro.close();
 			}
-		} catch(FileNotFoundException e) {
-			System.out.println("Erro na abertura do arquivo.");
 		}
 		
+		// Inicia o recebimento das opções do usuário para realizar as buscas, depois que a abertura do arquivo obteve sucesso (Deduzindo que o arquivo esta no mesmo padrão do exemplo deixado no PDF do trabalho)
 		if(aberturaCompleta){
 			String inicio = "", fim = "";
 			boolean loop = true;
@@ -122,6 +134,7 @@ public class Main {
 				System.out.println("Digite o número da operação que deseja realizar, ou digite qualquer outro caracter para fechar o programa: ");
 				usuario = entrada.next();
 				
+				// Verifica se a entrada do usuário está dentro das opções oferecidas
 				if(Integer.parseInt(usuario) > 0 && Integer.parseInt(usuario) <= 3) {
 					// Variáveis auxiliares
 					int count = 0;
@@ -133,8 +146,9 @@ public class Main {
 					}
 				}
 				
+				// Verifica qual tipo de busca o usuário escolheu, qualquer caracter diferente dos mostrados na tela (1~3) resultará no término do programa
 				switch(Integer.parseInt(usuario)) {
-					case 1:
+					case 1: // Busca em Largura
 						// Recebe a cidade que o usuário deseja partir (Ponto Inicial)
 						System.out.println("Digite o número da cidade de onde deseja partir (Ponto Inicial) ou digite qualquer outro caracter para voltar ao Menu Inicial: ");
 						inicio = entrada.next();
@@ -149,11 +163,11 @@ public class Main {
 							}
 
 							System.out.println("Pressione ENTER para retornar ao menu inicial.");
-							entrada.nextLine(); // Cambiarra para ele identificar um ENTER, com ou sem conteúdo
+							entrada.nextLine(); // Gambiarra para ele identificar um ENTER, com ou sem conteúdo
 							entrada.nextLine();
 						}
 						break;
-					case 2:
+					case 2: // Busca em Profundidade
 						// Recebe a cidade que o usuário deseja partir (Ponto Inicial)
 						System.out.println("Digite o número da cidade de onde deseja partir (Ponto Inicial) ou digite qualquer outro caracter para voltar ao Menu Inicial: ");
 						inicio = entrada.next();
@@ -168,11 +182,11 @@ public class Main {
 							}
 							
 							System.out.println("Pressione ENTER para retornar ao menu inicial.");
-							entrada.nextLine(); // Cambiarra para ele identificar um ENTER, com ou sem conteúdo
+							entrada.nextLine(); // Gambiarra para ele identificar um ENTER, com ou sem conteúdo
 							entrada.nextLine();
 						}
 						break;
-					case 3:
+					case 3: // Busca A*
 						// Recebe a cidade que o usuário deseja partir (Ponto Inicial)
 						System.out.println("Digite o número da cidade de onde deseja partir (Ponto Inicial) ou digite qualquer outro caracter para voltar ao Menu Inicial: ");
 						inicio = entrada.next();
@@ -187,7 +201,7 @@ public class Main {
 							}
 							
 							System.out.println("Pressione ENTER para retornar ao menu inicial.");
-							entrada.nextLine(); // Cambiarra para ele identificar um ENTER, com ou sem conteúdo
+							entrada.nextLine(); // Gambiarra para ele identificar um ENTER, com ou sem conteúdo
 							entrada.nextLine();
 						}
 						
