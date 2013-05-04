@@ -6,7 +6,6 @@
 package Buscas;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -92,6 +91,16 @@ public class Main {
 				}
 				
 				aberturaCompleta = true;
+				
+				// Mostra as cidades e suas ligações
+				for(Cidade c : mapa.getMapa()) {
+					System.out.println(c.getNome());
+					for(Cidade n : c.getProx()) {
+						System.out.print("->");
+						System.out.println(n.getNome());
+					}
+				}
+				System.out.println("\n\n");
 			} else {
 				System.out.println("O arquivo indicado não é um '*.txt'");
 			}
@@ -136,7 +145,7 @@ public class Main {
 							if(Integer.parseInt(fim) <= mapa.getLength() && Integer.parseInt(fim) > 0) {
 								// Caso todas as entradas sejam válidas, realiza a busca em largura
 								Busca buscas = new Busca();
-								buscas.buscaEmLargura( mapa.getNomeCidade(Integer.parseInt(inicio) - 1), mapa.getNomeCidade(Integer.parseInt(fim) - 1), mapa );
+								buscas.buscaEmLargura( mapa.getCidade(Integer.parseInt(inicio) - 1), mapa.getCidade(Integer.parseInt(fim) - 1) );
 							}
 
 							System.out.println("Pressione ENTER para retornar ao menu inicial.");
@@ -155,7 +164,7 @@ public class Main {
 							if(Integer.parseInt(fim) <= mapa.getLength() && Integer.parseInt(fim) > 0) {
 								// Caso todas as entradas sejam válidas, realiza a busca em largura
 								Busca buscas = new Busca();
-								buscas.buscaEmProfundidade( mapa.getNomeCidade(Integer.parseInt(inicio) - 1), mapa.getNomeCidade(Integer.parseInt(fim) - 1), mapa );
+								buscas.buscaEmProfundidade( mapa.getCidade(Integer.parseInt(inicio) - 1), mapa.getCidade(Integer.parseInt(fim) - 1) );
 							}
 							
 							System.out.println("Pressione ENTER para retornar ao menu inicial.");

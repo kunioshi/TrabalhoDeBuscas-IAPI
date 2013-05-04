@@ -12,6 +12,7 @@ public class Mapa {
 	
 	// Getters & Setters
 	public int getLength() { return _mapa.size(); }
+	public ArrayList<Cidade> getMapa() { return _mapa; }
 
 	public Cidade getCidade(String nome) {
 		for(Cidade c : _mapa) {

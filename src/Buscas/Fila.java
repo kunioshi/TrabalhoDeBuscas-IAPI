@@ -1,40 +1,31 @@
 package Buscas;
 
+import java.util.ArrayList;
+
 public class Fila {
+	private ArrayList<No> _fila;
 	
-	private final int TAM = 15;
-	private int ini;
-	private int fim;
-	private int[] vet;
-	
-	public Fila()
-	{
-		vet = new int[TAM];
-		fim = -1;
-		ini = 0;
+	// Constructor
+	public Fila() {
+		_fila = new ArrayList<No>();
 	}
 	
-	public int remove()
-	{
-		int aux = vet[ini++];
-		if (ini == TAM)
-		{
-			ini = 0;
+	// Setters& Getters
+	public ArrayList<No> getFila() { return _fila; }
+	public No getNo(Cidade cidade) { return _fila.get(_fila.indexOf(cidade)); }
+	
+	// Operações de Fila
+	public void enqueue(No no) { _fila.add(no); }
+	public No dequeue() { return _fila.remove(0); }
+	
+	public boolean isEmpty() { return _fila.isEmpty(); }
+	
+	public boolean existeCidade(Cidade cidade) {
+		for(No n : _fila) {
+			if(n.getCidade() == cidade)
+				return true;
 		}
-		return aux;
-	}
-	
-	public void insert(int inicio)
-	{
-		if(fim == TAM-1)
-		{
-			fim = -1;
-			vet[++fim] = inicio;
-		}
-	}
-	
-	public boolean empty()
-	{
-		return ((ini + TAM - 1 == fim) || (fim + 1 == ini));
+		
+		return false;
 	}
 }
