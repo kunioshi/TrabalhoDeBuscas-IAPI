@@ -18,9 +18,9 @@ class Vertice {
 	}
 	public Vertice(Cidade cidade, Vertice antecessor, Cidade fim) {
 		_cidade = cidade;
+		_antecessor = antecessor;
 		_heuristica = (float)Math.sqrt( Math.pow((_cidade.getX() - fim.getX()), 2) + Math.pow((_cidade.getY() - fim.getY()), 2) );
 		_custo = antecessor.getCusto() + (float)Math.sqrt( Math.pow((_cidade.getX() - antecessor.getCidade().getX()), 2) + Math.pow((_cidade.getY() - antecessor.getCidade().getY()), 2) );
-		_antecessor = antecessor;
 	}
 	
 	// Setters & Getters
@@ -177,7 +177,7 @@ public class BuscasReferencia {
 	public Vertice menorHeuristica(ArrayList<Vertice> lista) {
 		int auxIndex = 0;
 		for(Vertice c : lista) {
-			if(c.getHeuristica() < lista.get(auxIndex).getHeuristica())
+			if( (c.getHeuristica() + c.getCusto()) < (lista.get(auxIndex).getHeuristica() + lista.get(auxIndex).getCusto()) )
 				auxIndex = lista.indexOf(c);
 		}
 		
