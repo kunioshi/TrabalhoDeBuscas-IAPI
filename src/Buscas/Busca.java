@@ -4,25 +4,50 @@ import java.util.ArrayList;
 
 public class Busca {
 	
-	public void buscaEmLargura(int inicio, int fim, Mapa lista) {
-		// TODO Auto-generated method stub
+	public void buscaEmLargura(Cidade inicio, Cidade fim) 
+	{
+				No estado;
 				Fila fila = new Fila();
-
-				fila.insert(inicio);
-
-				while (!fila.empty())
+				ArrayList<No> explorados = new ArrayList<No>();
+				fila.enqueue(new No(inicio));
+				boolean encontrado = false;
+				
+				while (!fila.isEmpty())
 				{
-					int S = (int) fila.remove();
-					if (S == fim)
+					estado = fila.dequeue();
+					explorados.add(estado);
+					
+					if (estado.getCidade().getNome().equals(fim.getNome()))
 					{
-						System.out.println("Caminho encontrado!");
+						break;
+					}else
+						{
+							for (Cidade x : estado.getCidade().getProx())
+							{
+								boolean visitado = false;
+								for (No n : explorados)
+								{
+									if (n.getCidade() == x)
+									{
+										visitado = true;
+									}
+									if (!fila.existeCidade(x) && !visitado)
+									{
+										fila.enqueue(new No(x, estado));
+									}
+								}
+							}
+						}
 					}
-					//else
-					//{
-
-					//}
+				if(!encontrado)
+				{
+					System.out.println("Não é possível ir da cidade " + inicio.getNome() + " à cidade " + fim.getNome() + ".");					
+				}else{
+					float custo = obtemCaminho(explorados.get(explorados.size() - 1));
+					System.out.println("\nEste caminho tem o custo de $" + (float)(Math.round(custo*100))/100 + ".");
 				}
-	}
+	}		
+	
 
 	public void buscaEmProfundidade(Cidade inicio, Cidade destino) {
 		
