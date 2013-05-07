@@ -48,33 +48,49 @@ public class Busca {
 				}
 	}		
 	
-
+	//Metodo de Busca em Profundidade.
 	public void buscaEmProfundidade(Cidade inicio, Cidade destino) {
 		
-		No estado = new No(inicio);
+		No estado = new No(inicio);//Variavel que anda no grafo.
 		Pilha pilha = new Pilha();
 		ArrayList<No> explorados = new ArrayList<No>();
 		pilha.push(estado);
+		boolean encontrado = false;
 		
+		//Verifica se a pilha nao esta vazia.
 		while(!pilha.isEmpty()) {
 			
 			estado = pilha.pop();
 			explorados.add(estado);
 			
-			if(estado.getCidade().getNome().equals(inicio.getNome())) {
+			//Verifica se conseguiu chegar no destino.
+			if(estado.getCidade().getNome().equals(destino.getNome())) {
+				encontrado = true;
 				break;
 			}
 			else {
 				for (Cidade aux : estado.getCidade().getProx()) {
-										
+					
+					boolean visitados = false;
+					for (No numero : explorados) {
+						
+						if (numero.getCidade() == aux) {
+							visitados = true;
+						}
+					}
+					if(!visitados && !pilha.existeCidade(aux)) {
+						pilha.push(new No(aux, estado));
+					}
 				}
-			}
-			
+			}			
 		}
-		
-		
-		
-		
+		if(encontrado == true) {
+			float custo = obtemCaminho(explorados.get(explorados.size() - 1));
+			System.out.print("O custo e de : " + custo + (float)(Math.round(custo*100))/100);
+		}
+		else {
+			System.out.println("Nao foi possivel calcular rota");
+		}
 	}
 
 	public void buscaAStar(String string, String string2, Mapa mapa) {
