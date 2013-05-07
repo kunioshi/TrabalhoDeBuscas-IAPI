@@ -86,7 +86,8 @@ public class Busca {
 		}
 		if(encontrado == true) {
 			float custo = obtemCaminho(explorados.get(explorados.size() - 1));
-			System.out.print("O custo e de : " + custo + (float)(Math.round(custo*100))/100);
+			System.out.print("O custo e de : " +
+			(float)(Math.round(custo*100))/100);
 		}
 		else {
 			System.out.println("Nao foi possivel calcular rota");
